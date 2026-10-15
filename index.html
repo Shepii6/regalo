@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#351923">
+<title>Un pequeño universo para ti</title>
+<style>
+  :root { --ink:#351923; --wine:#6d263c; --rose:#d99aaa; --cream:#fff8f0; --gold:#e8c78b; }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body {
+    margin:0; color:var(--ink); background:var(--cream);
+    font-family: Georgia, "Times New Roman", serif; line-height:1.6;
+  }
+  button { font:inherit; cursor:pointer; }
+  .hero {
+    min-height:100svh; display:grid; place-items:center; text-align:center;
+    padding:32px 20px; color:#fff8f0; overflow:hidden; position:relative;
+    background:radial-gradient(ellipse at 20% 20%, #8a4358 0, transparent 35%),
+               radial-gradient(ellipse at 80% 75%, #71344b 0, transparent 40%),
+               linear-gradient(145deg,#28141e,#512235 65%,#351923);
+  }
+  .hero:before,.hero:after { content:"✦"; position:absolute; color:#e8c78b88; font-size:24px; }
+  .hero:before { top:15%; left:12%; } .hero:after { bottom:17%; right:13%; font-size:32px; }
+  .hero-inner { max-width:680px; position:relative; z-index:1; }
+  .eyebrow { letter-spacing:.22em; text-transform:uppercase; font: .72rem Arial,sans-serif; color:var(--gold); }
+  h1 { font-size:clamp(2.7rem,9vw,5.6rem); line-height:1.02; font-weight:normal; margin:20px 0; }
+  .hero p { font-size:1.1rem; max-width:480px; margin:0 auto 28px; color:#f8e9e8; }
+  .button {
+    border:1px solid var(--gold); background:var(--gold); color:#351923;
+    border-radius:999px; padding:13px 23px; transition:transform .2s,background .2s;
+  }
+  .button:hover { transform:translateY(-2px); background:#f2d9a8; }
+  .button.outline { background:transparent; color:var(--cream); }
+  main { max-width:850px; margin:auto; padding:0 20px 70px; }
+  section { padding:76px 0 20px; }
+  .section-label { font: .72rem Arial,sans-serif; text-transform:uppercase; letter-spacing:.18em; color:var(--wine); }
+  h2 { font-weight:normal; font-size:clamp(2rem,6vw,3.1rem); line-height:1.1; margin:12px 0 20px; }
+  .intro { max-width:650px; font-size:1.08rem; }
+  .letter {
+    margin-top:26px; padding:clamp(22px,5vw,42px); background:#fffdf9;
+    border:1px solid #ead9d4; box-shadow:0 12px 35px #3519230d; border-radius:5px;
+  }
+  .letter p { white-space:pre-line; }
+  .signature { color:var(--wine); font-style:italic; font-size:1.2rem; }
+  .memory-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin-top:28px; }
+  .memory {
+    background:#fffdf9; border:1px solid #ead9d4; padding:12px 12px 20px;
+    transform:rotate(-1deg); box-shadow:0 10px 25px #3519230c;
+  }
+  .memory:nth-child(even) { transform:rotate(1.2deg); }
+  .photo-placeholder {
+    min-height:160px; display:grid; place-items:center; text-align:center; padding:15px;
+    background:linear-gradient(135deg,#f4e1df,#ead1d1); color:#71344b; font-size:.92rem;
+  }
+  .memory h3 { font-size:1.25rem; font-weight:normal; margin:13px 4px 5px; }
+  .memory p { font-size:.93rem; margin:0 4px; }
+  .surprise-box { margin-top:24px; padding:25px; text-align:center; border-radius:8px; background:#f3e3df; }
+  .surprise-box p { max-width:540px; margin:12px auto 20px; }
+  .hidden-note { display:none; margin:22px auto 0; max-width:550px; padding:22px; background:#fffaf7; border:1px dashed #b87d8d; border-radius:6px; }
+  .hidden-note.show { display:block; animation:appear .55s ease both; }
+  .finale { text-align:center; padding:75px 0 15px; }
+  .heart { color:var(--wine); font-size:2.2rem; animation:beat 1.6s ease-in-out infinite; display:inline-block; }
+  footer { text-align:center; padding:30px 18px 45px; color:#866b70; font-size:.85rem; }
+  @keyframes appear { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes beat { 0%,100% { transform:scale(1); } 50% { transform:scale(1.13); } }
+  @media (max-width:560px) { .memory-grid { grid-template-columns:1fr; } .photo-placeholder { min-height:190px; } section { padding-top:58px; } }
+  @media (prefers-reduced-motion:reduce) { *,*:before,*:after { animation:none!important; scroll-behavior:auto!important; transition:none!important; } }
+</style>
+</head>
+<body>
+<header class="hero" id="inicio">
+  <div class="hero-inner">
+    <div class="eyebrow">Hecho con cariño, solo para ti</div>
+    <h1>Un pequeño<br>universo nuestro</h1>
+    <p>Hay cosas que a veces cuesta decir en un solo mensaje. Así que quise hacerte un lugarcito donde guardar algunas de ellas.</p>
+    <button class="button" onclick="document.querySelector('#carta').scrollIntoView({behavior:'smooth'})">Abrir mi regalo ♥</button>
+  </div>
+</header>
+
+<main>
+  <section id="carta">
+    <div class="section-label">01 · Unas palabras para ti</div>
+    <h2>Mi carta para ti</h2>
+    <p class="intro">Esta parte es para decirle lo que significa para ti, con tus propias palabras. Cambia este texto por algo que realmente le dirías.</p>
+    <article class="letter">
+      <p>Amor,
+
+Quería regalarte algo distinto, algo que pudieras volver a abrir cuando quisieras y que te recordara lo importante que eres para mí.
+
+Gracias por los momentos bonitos, por las risas, por las conversaciones y por todas esas pequeñas cosas que quizá parecen simples, pero que conmigo se quedan guardadas.
+
+No sé si una página pueda explicar todo lo que siento, pero sí quería que tuviera un pedacito de nosotros. Ojalá cuando la veas sonrías y recuerdes que hay alguien que te quiere muchísimo.
+
+Quiero seguir construyendo recuerdos contigo, aprender de nosotros y disfrutar todo lo lindo que todavía nos queda por vivir.</p>
+      <p class="signature">Con todo mi cariño, tu persona ♥</p>
+    </article>
+  </section>
+
+  <section id="recuerdos">
+    <div class="section-label">02 · Pequeños momentos, grandes recuerdos</div>
+    <h2>Nuestros pedacitos de historia</h2>
+    <p class="intro">Reemplaza los cuadros por fotos de ustedes y escribe debajo qué hace especial cada recuerdo. No tienen que ser grandes ocasiones: a veces los momentos más simples son los mejores.</p>
+    <div class="memory-grid">
+      <article class="memory">
+        <div class="photo-placeholder">📷<br>Aquí va una foto de ustedes</div>
+        <h3>Ese día que...</h3>
+        <p>Escribe aquí qué pasó, qué te hizo feliz y por qué lo recuerdas con cariño.</p>
+      </article>
+      <article class="memory">
+        <div class="photo-placeholder">✦<br>Una foto de un momento especial</div>
+        <h3>Una de mis partes favoritas</h3>
+        <p>Cuenta una anécdota pequeña que solo ustedes entiendan.</p>
+      </article>
+      <article class="memory">
+        <div class="photo-placeholder">♡<br>Un recuerdo cotidiano</div>
+        <h3>Lo simple contigo</h3>
+        <p>Puede ser una salida, una conversación o una tontería que les dio risa.</p>
+      </article>
+      <article class="memory">
+        <div class="photo-placeholder">🌙<br>Un recuerdo que guardas mucho</div>
+        <h3>Y todavía quedan más...</h3>
+        <p>Unas palabras sobre algo que te gustaría volver a vivir con ella.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="sorpresa">
+    <div class="section-label">03 · Un pequeño secreto</div>
+    <h2>Hay algo más...</h2>
+    <div class="surprise-box">
+      <div style="font-size:2rem">✉</div>
+      <p>Preparé un mensajito escondido. Tócalo cuando quieras descubrirlo.</p>
+      <button class="button" onclick="toggleNote()" id="surpriseButton">Abrir sorpresa</button>
+      <div class="hidden-note" id="hiddenNote">
+        <p><strong>Mi deseo para nosotros</strong></p>
+        <p>Que nunca nos falten las ganas de escucharnos, reír juntos, cuidarnos y crear nuevas historias. Y que, cuando miremos hacia atrás, tengamos muchísimos recuerdos que nos hagan decir: «qué lindo todo lo que vivimos».</p>
+        <p>Esto no termina aquí. Todavía nos quedan muchas páginas por escribir. ♥</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="finale">
+    <div class="heart">♥</div>
+    <h2>Gracias por ser parte de mi historia</h2>
+    <p>Si pudiera guardar un deseo en esta página, sería seguir sumando momentos bonitos contigo.</p>
+    <button class="button outline" style="background:#6d263c;color:#fff8f0" onclick="document.querySelector('#inicio').scrollIntoView({behavior:'smooth'})">Volver al principio ↑</button>
+  </section>
+</main>
+<footer>Hecho especialmente para ti · Con cariño ♥</footer>
+
+<script>
+function toggleNote() {
+  const note = document.getElementById('hiddenNote');
+  const button = document.getElementById('surpriseButton');
+  const isOpen = note.classList.toggle('show');
+  button.textContent = isOpen ? 'Cerrar sorpresa' : 'Abrir sorpresa';
+}
+</script>
+</body>
+</html>
