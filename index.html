@@ -240,13 +240,38 @@ function makeGirl(){
  box(g,.18,.17,.18,skin,0,1.73,0);
  sphere(g,.31,skin,0,2.03,0,1,1.12,.92);
  // cabello cobrizo: capucha y mechones, más largo detrás
- sphere(g,.325,hair,0,2.18,-.055,1.04,.75,1.02);
- sphere(g,.13,hair,-.25,2.02,.04,.8,1.8,.9);sphere(g,.13,hair,.25,2.02,.04,.8,1.8,.9);
- sphere(g,.11,hair,-.13,2.24,.21,1,.55,.6);sphere(g,.11,hair,.06,2.25,.22,1,.55,.6);
+ sphere(g,.325,hair,0,2.18,.055,1.04,.75,1.02);
+ sphere(g,.13,hair,-.25,2.02,-.04,.8,1.8,.9);sphere(g,.13,hair,.25,2.02,-.04,.8,1.8,.9);
+ sphere(g,.11,hair,-.13,2.24,-.21,1,.55,.6);sphere(g,.11,hair,.06,2.25,-.22,1,.55,.6);
  // cara sencilla
- sphere(g,.035,eyes,-.105,2.05,.276,.7,1,.55);sphere(g,.035,eyes,.105,2.05,.276,.7,1,.55);
- const smile=box(g,.09,.018,.018,mat('#a95e5b'),0,1.94,.285);
+ sphere(g,.035,eyes,-.105,2.05,-.276,.7,1,.55);sphere(g,.035,eyes,.105,2.05,-.276,.7,1,.55);
+ const smile=box(g,.09,.018,.018,mat('#a95e5b'),0,1.94,-.285);
  g.position.set(0,0,0);g.userData={shirt};scene.add(g);return g;
+}
+function makeBoy(){
+ const g=new THREE.Group();
+ const skin=mat('#f0c7a8'), hair=mat('#e6bd55'), shirt=mat('#6d263c'), pants=mat('#30303a'), shoes=mat('#201d24'), eyes=mat('#38252a'), glasses=mat('#30242a');
+ // Cuerpo y piernas
+ box(g,.23,.62,.24,pants,-.16,.62,0);box(g,.23,.62,.24,pants,.16,.62,0);
+ box(g,.25,.13,.38,shoes,-.16,.15,.04);box(g,.25,.13,.38,shoes,.16,.15,.04);
+ box(g,.63,.62,.34,shirt,0,1.35,0);
+ const armL=box(g,.17,.55,.18,skin,-.42,1.33,0);armL.rotation.z=-.12;
+ const armR=box(g,.17,.55,.18,skin,.42,1.33,0);armR.rotation.z=.12;
+ box(g,.18,.17,.18,skin,0,1.73,0);
+ sphere(g,.31,skin,0,2.03,0,1,1.12,.92);
+ // Pelo rubio rizado
+ sphere(g,.325,hair,0,2.19,-.025,1.05,.72,1.02);
+ [[-.22,2.28,.12],[-.1,2.34,.16],[.04,2.34,.16],[.18,2.29,.12],[-.27,2.17,.08],[.27,2.17,.08]].forEach(([x,y,z])=>sphere(g,.105,hair,x,y,z,1,1,.95));
+ // Cara mirando hacia el camino (+Z)
+ sphere(g,.035,eyes,-.105,2.05,.276,.7,1,.55);sphere(g,.035,eyes,.105,2.05,.276,.7,1,.55);
+ // Lentes redondos con puente
+ const lensMat=new THREE.MeshStandardMaterial({color:'#30242a',roughness:.45});
+ const lensGeo=new THREE.TorusGeometry(.085,.012,8,20);
+ const l1=new THREE.Mesh(lensGeo,lensMat);l1.position.set(-.105,2.055,.292);g.add(l1);
+ const l2=new THREE.Mesh(lensGeo,lensMat);l2.position.set(.105,2.055,.292);g.add(l2);
+ box(g,.055,.012,.012,glasses,0,2.06,.294);
+ box(g,.09,.018,.018,mat('#a95e5b'),0,1.94,.285);
+ return g;
 }
 function clearScene(){if(renderer){cancelAnimationFrame(raf);renderer.dispose();host.querySelectorAll('canvas').forEach(c=>c.remove());}scene=new THREE.Scene();scene.background=new THREE.Color('#f4dfe5');scene.fog=new THREE.Fog('#f4dfe5',17,48);camera=new THREE.PerspectiveCamera(55,host.clientWidth/host.clientHeight,.1,100);renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));renderer.setSize(host.clientWidth,host.clientHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;host.prepend(renderer.domElement);
  scene.add(new THREE.HemisphereLight('#fff5f6','#a98a82',2));const sun=new THREE.DirectionalLight('#fff4dd',2.4);sun.position.set(-5,10,6);sun.castShadow=true;scene.add(sun);
@@ -261,7 +286,7 @@ function clearScene(){if(renderer){cancelAnimationFrame(raf);renderer.dispose();
  const heartMat=mat('#df6686');
  [[0,1.15,-2.2],[0,1.15,-5],[2,1.15,-9],[-1,1.15,-13],[1,1.15,-17]].forEach(([x,y,z])=>{const h=new THREE.Group();sphere(h,.18,heartMat,-.1,.05,0);sphere(h,.18,heartMat,.1,.05,0);const tip=new THREE.Mesh(new THREE.ConeGeometry(.19,.28,4),heartMat);tip.rotation.y=Math.PI/4;tip.position.y=-.11;h.add(tip);h.position.set(x,y,z);scene.add(h);hearts.push({mesh:h,taken:false,baseY:y});});
  // arco/meta al final
- const goal=new THREE.Group();const gold=mat('#d8ad5e');const pole=box(goal,.12,2.2,.12,gold,-1,1,0);box(goal,.12,2.2,.12,gold,1,1,0);box(goal,2.1,.12,.12,gold,0,2.05,0);const flag=box(goal,1.05,.58,.06,mat('#a94f70'),.35,1.65,0);goal.position.set(0,0,-22);scene.add(goal);scene.userData.goal=goal;
+ const goal=new THREE.Group();const gold=mat('#d8ad5e');const pole=box(goal,.12,2.2,.12,gold,-1,1,0);box(goal,.12,2.2,.12,gold,1,1,0);box(goal,2.1,.12,.12,gold,0,2.05,0);const flag=box(goal,1.05,.58,.06,mat('#a94f70'),.35,1.65,0);goal.position.set(0,0,-22);scene.add(goal);scene.userData.goal=goal;const boy=makeBoy();boy.position.set(0,0,-22.15);boy.rotation.y=Math.PI;scene.add(boy);scene.userData.boy=boy;
  player=makeGirl();player.position.set(0,.02,1.1);velocityY=0;onGround=false;collected=0;counter.textContent='0 / 5';clock=new THREE.Clock();camera.position.set(0,4.8,7.5);camera.lookAt(0,1,-2);keys={};
 }
 function start(){startOverlay.classList.add('hidden');endOverlay.classList.add('hidden');failOverlay.classList.add('hidden');prize.classList.remove('show');active=true;clearScene();animate();}
