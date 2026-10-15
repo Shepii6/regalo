@@ -67,6 +67,25 @@
   @keyframes beat { 0%,100% { transform:scale(1); } 50% { transform:scale(1.13); } }
   @media (max-width:560px) { .memory-grid { grid-template-columns:1fr; } .photo-placeholder { min-height:190px; } section { padding-top:58px; } }
   @media (prefers-reduced-motion:reduce) { *,*:before,*:after { animation:none!important; scroll-behavior:auto!important; transition:none!important; } }
+
+  /* Mini juego 3D de plataformas */
+  .game-wrap { margin-top:26px; padding:14px; background:#fffaf7; border:1px solid #ead9d4; border-radius:10px; box-shadow:0 12px 35px #3519230d; }
+  .game-top { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin:0 4px 10px; }
+  .game-hud { font-size:.92rem; color:#71344b; }
+  #platformGame { position:relative; width:100%; height: min(62vh,520px); min-height:320px; overflow:hidden; border-radius:8px; background:linear-gradient(#f3dce3,#f7e9dc); }
+  #platformGame canvas { display:block; width:100%; height:100%; }
+  .game-overlay { position:absolute; inset:0; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:24px; background:#351923a8; color:#fff8f0; z-index:2; }
+  .game-overlay h3 { font-size:clamp(1.7rem,5vw,2.5rem); margin:0 0 10px; font-weight:normal; }
+  .game-overlay p { max-width:440px; margin:0 0 18px; }
+  .game-overlay.hidden { display:none; }
+  .game-controls { display:flex; justify-content:space-between; align-items:center; gap:10px; margin-top:12px; flex-wrap:wrap; }
+  .move-controls { display:flex; gap:8px; }
+  .game-control { border:1px solid #c99da8; border-radius:12px; background:#f3e3e7; color:#572638; min-width:48px; min-height:44px; font-size:1.1rem; touch-action:none; }
+  .game-help { font-size:.85rem; color:#80666b; margin:10px 4px 2px; }
+  .game-note { display:none; padding:22px; margin-top:16px; background:#f3e3df; border-radius:8px; text-align:center; }
+  .game-note.show { display:block; animation:appear .5s ease both; }
+  @media(max-width:560px) { #platformGame { height:56vh; min-height:300px; } .game-wrap { padding:8px; } }
+
 </style>
 </head>
 <body>
@@ -75,7 +94,7 @@
     <div class="eyebrow">Hecho con cariño, solo para ti</div>
     <h1>Un pequeño<br>universo nuestro</h1>
     <p>Hay cosas que a veces cuesta decir en un solo mensaje. Así que quise hacerte un lugarcito donde guardar algunas de ellas.</p>
-    <button class="button" onclick="document.querySelector('#carta').scrollIntoView({behavior:'smooth'})">Abrir mi regalo ♥</button>
+    <button class="button" onclick="document.querySelector('#carta').scrollIntoView({behavior:'smooth'})">Abrir mi regalo ♥</button> <button class="button outline" onclick="document.querySelector('#juego').scrollIntoView({behavior:'smooth'})">Jugar en 3D 🎮</button>
   </div>
 </header>
 
@@ -126,8 +145,29 @@ Quiero seguir construyendo recuerdos contigo, aprender de nosotros y disfrutar t
     </div>
   </section>
 
+
+  <section id="juego">
+    <div class="section-label">03 · Una pequeña aventura</div>
+    <h2>¿Me acompañas a jugar?</h2>
+    <p class="intro">Te preparé un pequeño mundo en 3D. Salta entre las plataformas, junta los corazones y llega hasta el final para descubrir una sorpresa. ♥</p>
+    <div class="game-wrap">
+      <div class="game-top"><strong>La aventura de los corazones</strong><div class="game-hud">Corazones: <span id="heartCount">0 / 5</span></div></div>
+      <div id="platformGame">
+        <div class="game-overlay" id="gameStart"><h3>Un mundo para ti ♥</h3><p>Ayúdame a llegar al final del camino. Recoge los corazones y no te caigas de las plataformas.</p><button class="button" id="startGame">Comenzar aventura</button></div>
+        <div class="game-overlay hidden" id="gameEnd"><h3>¡Lo lograste! ♥</h3><p>Encontraste el camino hasta el final. Hay una cosita esperándote fuera del juego.</p><button class="button" id="restartGame">Jugar otra vez</button></div>
+        <div class="game-overlay hidden" id="gameOver"><h3>¡Casi lo tenías!</h3><p>No pasa nada, vuelve a intentarlo. Los corazones te están esperando.</p><button class="button" id="retryGame">Intentar de nuevo</button></div>
+      </div>
+      <div class="game-controls">
+        <div class="move-controls"><button class="game-control" data-key="left" aria-label="Mover a la izquierda">◀</button><button class="game-control" data-key="right" aria-label="Mover a la derecha">▶</button><button class="game-control" data-key="forward" aria-label="Avanzar">▲</button><button class="game-control" data-key="back" aria-label="Retroceder">▼</button></div>
+        <button class="game-control" data-key="jump">⤒ Saltar</button>
+      </div>
+      <p class="game-help">Computador: WASD o flechas para moverte, barra espaciadora para saltar. Teléfono: usa los botones. La cámara te sigue automáticamente.</p>
+    </div>
+    <div class="game-note" id="gamePrize"><h3>Una última cosita para ti ✉</h3><p>Mi parte favorita no es llegar al final, sino imaginar todas las aventuras y recuerdos que todavía nos quedan por vivir juntos. Te quiero mucho. ♥</p></div>
+  </section>
+
   <section id="sorpresa">
-    <div class="section-label">03 · Un pequeño secreto</div>
+    <div class="section-label">04 · Un pequeño secreto</div>
     <h2>Hay algo más...</h2>
     <div class="surprise-box">
       <div style="font-size:2rem">✉</div>
@@ -158,5 +198,74 @@ function toggleNote() {
   button.textContent = isOpen ? 'Cerrar sorpresa' : 'Abrir sorpresa';
 }
 </script>
+
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+const host=document.getElementById('platformGame');
+const startOverlay=document.getElementById('gameStart'), endOverlay=document.getElementById('gameEnd'), failOverlay=document.getElementById('gameOver');
+const prize=document.getElementById('gamePrize'), counter=document.getElementById('heartCount');
+let renderer,scene,camera,player,clock,active=false,raf=0,hearts=[],platforms=[],keys={},collected=0,velocityY=0,onGround=false;
+const world={x:0,z:0};
+const mat=(color,roughness=.85)=>new THREE.MeshStandardMaterial({color,roughness});
+function box(parent,w,h,d,material,x,y,z){const m=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),material);m.position.set(x,y,z);m.castShadow=true;m.receiveShadow=true;parent.add(m);return m;}
+function sphere(parent,r,material,x,y,z,scaleX=1,scaleY=1,scaleZ=1){const m=new THREE.Mesh(new THREE.SphereGeometry(r,12,10),material);m.position.set(x,y,z);m.scale.set(scaleX,scaleY,scaleZ);m.castShadow=true;parent.add(m);return m;}
+function makeGirl(){
+ const g=new THREE.Group();
+ const skin=mat('#f0c5a7'), hair=mat('#a94f2f'), shirt=mat('#762c45'), pants=mat('#202027'), shoes=mat('#17171b'), white=mat('#f5eee8'), eyes=mat('#38252a');
+ // piernas y zapatos
+ box(g,.22,.62,.24,pants,-.16,.62,0);box(g,.22,.62,.24,pants,.16,.62,0);
+ box(g,.25,.13,.38,shoes,-.16,.15,-.06);box(g,.25,.13,.38,shoes,.16,.15,-.06);
+ // polera y brazos
+ box(g,.63,.62,.34,shirt,0,1.35,0);
+ const armL=box(g,.17,.55,.18,skin,-.42,1.33,0);armL.rotation.z=-.12;
+ const armR=box(g,.17,.55,.18,skin,.42,1.33,0);armR.rotation.z=.12;
+ // cuello y cabeza
+ box(g,.18,.17,.18,skin,0,1.73,0);
+ sphere(g,.31,skin,0,2.03,0,1,1.12,.92);
+ // cabello cobrizo: capucha y mechones, más largo detrás
+ sphere(g,.325,hair,0,2.18,-.055,1.04,.75,1.02);
+ sphere(g,.13,hair,-.25,2.02,.04,.8,1.8,.9);sphere(g,.13,hair,.25,2.02,.04,.8,1.8,.9);
+ sphere(g,.11,hair,-.13,2.24,.21,1,.55,.6);sphere(g,.11,hair,.06,2.25,.22,1,.55,.6);
+ // cara sencilla
+ sphere(g,.035,eyes,-.105,2.05,.276,.7,1,.55);sphere(g,.035,eyes,.105,2.05,.276,.7,1,.55);
+ const smile=box(g,.09,.018,.018,mat('#a95e5b'),0,1.94,.285);
+ g.position.set(0,0,0);g.userData={shirt};scene.add(g);return g;
+}
+function clearScene(){if(renderer){cancelAnimationFrame(raf);renderer.dispose();host.querySelectorAll('canvas').forEach(c=>c.remove());}scene=new THREE.Scene();scene.background=new THREE.Color('#f4dfe5');scene.fog=new THREE.Fog('#f4dfe5',17,48);camera=new THREE.PerspectiveCamera(55,host.clientWidth/host.clientHeight,.1,100);renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));renderer.setSize(host.clientWidth,host.clientHeight);renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFSoftShadowMap;host.prepend(renderer.domElement);
+ scene.add(new THREE.HemisphereLight('#fff5f6','#a98a82',2));const sun=new THREE.DirectionalLight('#fff4dd',2.4);sun.position.set(-5,10,6);sun.castShadow=true;scene.add(sun);
+ // cielo y suelo decorativo
+ const ground=new THREE.Mesh(new THREE.PlaneGeometry(100,100),mat('#b7c6a0'));ground.rotation.x=-Math.PI/2;ground.position.y=-2.1;ground.receiveShadow=true;scene.add(ground);
+ platforms=[];hearts=[];
+ const places=[ [0,0,0,4,4],[0,0,-5,3,3],[2,0,-9,3,3],[-1,0,-13,3,3],[1,0,-17,3,3],[0,0,-21,4,4] ];
+ places.forEach((p,i)=>{const [x,y,z,w,d]=p;const pl=box(scene,w,.45,d,mat(i===5?'#d8b7c1':'#d9c6b2'),x,y-.25,z);pl.userData={x,z,w,d,top:y};platforms.push(pl);});
+ // adornos pequeños a los lados de las plataformas
+ for(let i=0;i<16;i++){const z=-1-(i*1.35);const flower=new THREE.Group();sphere(flower,.12,mat(i%2?'#e9a8b9':'#fff0c4'),0,0,0,1,.7,1);sphere(flower,.055,mat('#e2c65f'),0,.04,0);flower.position.set((i%2?1:-1)*(3.1+(i%3)*.25),-.2,z);scene.add(flower);}
+ // corazones hechos con dos esferas y una punta sencilla
+ const heartMat=mat('#df6686');
+ [[0,1.15,-2.2],[0,1.15,-5],[2,1.15,-9],[-1,1.15,-13],[1,1.15,-17]].forEach(([x,y,z])=>{const h=new THREE.Group();sphere(h,.18,heartMat,-.1,.05,0);sphere(h,.18,heartMat,.1,.05,0);const tip=new THREE.Mesh(new THREE.ConeGeometry(.19,.28,4),heartMat);tip.rotation.y=Math.PI/4;tip.position.y=-.11;h.add(tip);h.position.set(x,y,z);scene.add(h);hearts.push({mesh:h,taken:false,baseY:y});});
+ // arco/meta al final
+ const goal=new THREE.Group();const gold=mat('#d8ad5e');const pole=box(goal,.12,2.2,.12,gold,-1,1,0);box(goal,.12,2.2,.12,gold,1,1,0);box(goal,2.1,.12,.12,gold,0,2.05,0);const flag=box(goal,1.05,.58,.06,mat('#a94f70'),.35,1.65,0);goal.position.set(0,0,-22);scene.add(goal);scene.userData.goal=goal;
+ player=makeGirl();player.position.set(0,.02,1.1);velocityY=0;onGround=false;collected=0;counter.textContent='0 / 5';clock=new THREE.Clock();camera.position.set(0,4.8,7.5);camera.lookAt(0,1,-2);keys={};
+}
+function start(){startOverlay.classList.add('hidden');endOverlay.classList.add('hidden');failOverlay.classList.add('hidden');prize.classList.remove('show');active=true;clearScene();animate();}
+function stop(){active=false;}
+function moveVec(){let x=0,z=0;if(keys.left||keys.a||keys.ArrowLeft)x-=1;if(keys.right||keys.d||keys.ArrowRight)x+=1;if(keys.forward||keys.w||keys.ArrowUp)z-=1;if(keys.back||keys.s||keys.ArrowDown)z+=1;return {x,z};}
+function animate(){if(!active)return;raf=requestAnimationFrame(animate);const dt=Math.min(clock.getDelta(),.04);const dir=moveVec();const speed=4.4;player.position.x+=dir.x*speed*dt;player.position.z+=dir.z*speed*dt;if(dir.x||dir.z)player.rotation.y=Math.atan2(dir.x,-dir.z);player.position.x=Math.max(-4,Math.min(4,player.position.x));
+ velocityY-=12*dt;player.position.y+=velocityY*dt;onGround=false;
+ for(const pl of platforms){const {x,z,w,d,top}=pl.userData;const px=player.position.x,pz=player.position.z;if(px>x-w/2+.05&&px<x+w/2-.05&&pz>z-d/2+.05&&pz<z+d/2-.05&&velocityY<=0&&player.position.y<=top+.08&&player.position.y>=top-.35){player.position.y=top;velocityY=0;onGround=true;}}
+ if(keys.jump&&onGround){velocityY=7.3;onGround=false;keys.jump=false;}
+ // animación sencilla de pasos
+ if(dir.x||dir.z){player.children[0].rotation.x=Math.sin(performance.now()*.014)*.08;player.children[1].rotation.x=-Math.sin(performance.now()*.014)*.08;}
+ hearts.forEach(h=>{if(h.taken)return;h.mesh.position.y=h.baseY+Math.sin(performance.now()*.002+h.baseY)*.12;h.mesh.rotation.y+=dt;if(player.position.distanceTo(h.mesh.position)<.85){h.taken=true;scene.remove(h.mesh);collected++;counter.textContent=collected+' / 5';}});
+ const goal=scene.userData.goal;if(player.position.z<-20.5&&Math.abs(player.position.x)<1.8&&player.position.y<1.4){stop();endOverlay.classList.remove('hidden');prize.classList.add('show');}
+ if(player.position.y< -3.5){stop();failOverlay.classList.remove('hidden');}
+ const target=new THREE.Vector3(player.position.x*.35,player.position.y+3.2,player.position.z+6.6);camera.position.lerp(target,.09);camera.lookAt(player.position.x,player.position.y+1,player.position.z-2.4);renderer.render(scene,camera);
+}
+document.getElementById('startGame').addEventListener('click',start);document.getElementById('restartGame').addEventListener('click',start);document.getElementById('retryGame').addEventListener('click',start);
+window.addEventListener('keydown',e=>{const k=e.key.length===1?e.key.toLowerCase():e.key;if([' ','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key))e.preventDefault();if(e.key===' ')keys.jump=true;else keys[k]=true;});window.addEventListener('keyup',e=>{const k=e.key.length===1?e.key.toLowerCase():e.key;if(e.key===' ')keys.jump=false;else keys[k]=false;});
+document.querySelectorAll('.game-control[data-key]').forEach(btn=>{const k=btn.dataset.key;const down=e=>{e.preventDefault();keys[k]=true;};const up=e=>{e.preventDefault();if(k!=='jump')keys[k]=false;};btn.addEventListener('pointerdown',down);['pointerup','pointercancel','pointerleave'].forEach(ev=>btn.addEventListener(ev,up));});
+window.addEventListener('resize',()=>{if(!renderer||!camera)return;camera.aspect=host.clientWidth/host.clientHeight;camera.updateProjectionMatrix();renderer.setSize(host.clientWidth,host.clientHeight);});
+</script>
+
 </body>
 </html>
